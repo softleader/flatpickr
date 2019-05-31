@@ -89,11 +89,7 @@ export const revFormat: RevFormat = {
     dateObj.setFullYear(parseFloat(year));
   },
   C: (dateObj: Date, year: string, locale: Locale) => {
-    let parsed = parseFloat(year);
-    if (locale.fromChrono) {
-      parsed = locale.fromChrono(parsed);
-    }
-    dateObj.setFullYear(parsed);
+    dateObj.setFullYear(locale.fromChrono(parseFloat(year)));
   },
   Z: (_: Date, ISODate: string) => new Date(ISODate),
 
@@ -216,13 +212,7 @@ export const formats: Formats = {
   Y: (date: Date) => date.getFullYear(),
 
   // full year Chrono formatted
-  C: (date: Date, locale: Locale) => {
-    let year = date.getFullYear();
-    if (locale.toChrono) {
-      year = locale.toChrono(year);
-    }
-    return year;
-  },
+  C: (date: Date, locale: Locale) => locale.toChrono(date.getFullYear()),
 
   // day in month, padded (01-30)
   d: (date: Date) => pad(date.getDate()),

@@ -66,6 +66,8 @@ export const english: Locale = {
   amPM: ["AM", "PM"],
   yearAriaLabel: "Year",
   time_24hr: false,
+  fromChrono: chronoYear => chronoYear,
+  toChrono: isoYear => isoYear,
 };
 
 export default english;
