@@ -2655,7 +2655,11 @@ function FlatpickrInstance(
         self.monthsDropdownContainer.value = d.getMonth().toString();
       }
 
-      yearElement.value = d.getFullYear().toString();
+      let year = d.getFullYear();
+      if (self.l10n.toChrono) {
+        year = self.l10n.toChrono(year);
+      }
+      yearElement.value = year.toString();
     });
 
     self._hidePrevMonthArrow =

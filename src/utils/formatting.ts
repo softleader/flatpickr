@@ -14,6 +14,7 @@ export type token =
   | "U"
   | "W"
   | "Y"
+  | "C"
   | "Z"
   | "d"
   | "h"
@@ -87,6 +88,13 @@ export const revFormat: RevFormat = {
   Y: (dateObj: Date, year: string) => {
     dateObj.setFullYear(parseFloat(year));
   },
+  C: (dateObj: Date, year: string, locale: Locale) => {
+    let parsed = parseFloat(year);
+    if (locale.fromChrono) {
+      parsed = locale.fromChrono(parsed);
+    }
+    dateObj.setFullYear(parsed);
+  },
   Z: (_: Date, ISODate: string) => new Date(ISODate),
 
   d: (dateObj: Date, day: string) => {
@@ -132,6 +140,7 @@ export const tokenRegex: TokenRegex = {
   U: "(.+)",
   W: "(\\d\\d|\\d)",
   Y: "(\\d{4})",
+  C: "(\\d{1,4})",
   Z: "(.+)",
   d: "(\\d\\d|\\d)",
   h: "(\\d\\d|\\d)",
@@ -205,6 +214,15 @@ export const formats: Formats = {
 
   // full year e.g. 2016
   Y: (date: Date) => date.getFullYear(),
+
+  // full year Chrono formatted
+  C: (date: Date, locale: Locale) => {
+    let year = date.getFullYear();
+    if (locale.toChrono) {
+      year = locale.toChrono(year);
+    }
+    return year;
+  },
 
   // day in month, padded (01-30)
   d: (date: Date) => pad(date.getDate()),

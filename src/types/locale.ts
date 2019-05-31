@@ -49,6 +49,8 @@ export type Locale = {
   ];
   firstDayOfWeek: number;
   ordinal: (nth: number) => string;
+  fromChrono: (chronoYear: number) => number;
+  toChrono: (isoYear: number) => number;
   rangeSeparator: string;
   weekAbbreviation: string;
   scrollTitle: string;
@@ -59,6 +61,8 @@ export type Locale = {
 };
 
 export type CustomLocale = {
+  fromChrono?: Locale["fromChrono"];
+  toChrono?: Locale["toChrono"];
   ordinal?: Locale["ordinal"];
   daysInMonth?: Locale["daysInMonth"];
   firstDayOfWeek?: Locale["firstDayOfWeek"];
@@ -163,4 +167,5 @@ export type key =
   | "uk"
   | "vn"
   | "zh"
-  | "zh_tw";
+  | "zh_tw"
+  | "zh_tw_minguo";
