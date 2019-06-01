@@ -16,6 +16,7 @@ export type token =
   | "Y"
   | "C"
   | "Z"
+  | "z"
   | "d"
   | "h"
   | "i"
@@ -92,7 +93,7 @@ export const revFormat: RevFormat = {
     dateObj.setFullYear(locale.fromChrono(parseFloat(year)));
   },
   Z: (_: Date, ISODate: string) => new Date(ISODate),
-
+  z: (_: Date, ISODate: string) => new Date(ISODate),
   d: (dateObj: Date, day: string) => {
     dateObj.setDate(parseFloat(day));
   },
@@ -138,6 +139,7 @@ export const tokenRegex: TokenRegex = {
   Y: "(\\d{4})",
   C: "(\\d{1,4})",
   Z: "(.+)",
+  z: "(.+)",
   d: "(\\d\\d|\\d)",
   h: "(\\d\\d|\\d)",
   i: "(\\d\\d|\\d)",
@@ -158,6 +160,12 @@ export type Formats = Record<
 export const formats: Formats = {
   // get the date in UTC
   Z: (date: Date) => date.toISOString(),
+
+  // get the date in local
+  z: (date: Date) => {
+    let offset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    return (new Date(date.getTime() - offset)).toISOString();    
+  },
 
   // weekday name, short, e.g. Thu
   D: function(date: Date, locale: Locale, options: ParsedOptions) {

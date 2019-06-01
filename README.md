@@ -34,6 +34,7 @@ Feature overview:
 - Numerous plugins
 - Libraries available for React, Angular, Vue, Ember, and more
 - Support localization for human-friendly dates in chronology (e.g. zh_tw_minguo), and add [formatting](https://flatpickr.js.org/formatting/) token `C` for showing chrono year
+- Support local ISO date formatting (token `z`)
 
 ![](https://user-images.githubusercontent.com/11352152/36033089-f37dc1d0-0d7d-11e8-8ec4-c7a56d1ff92e.png)
 
