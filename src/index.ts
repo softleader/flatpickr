@@ -344,7 +344,7 @@ function FlatpickrInstance(
       year / 1000 > 1 ||
       (event.key === "Enter" && !/[^\d]/.test(year.toString()))
     ) {
-      changeYear(year);
+      changeYear(self.l10n.fromChrono(year));
     }
   }
 
