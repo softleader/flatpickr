@@ -27,7 +27,9 @@ export type token =
   | "s"
   | "u"
   | "w"
-  | "y";
+  | "y"
+  | "-"
+  | "/";
 
 const doNothing = (): undefined => undefined;
 
@@ -122,6 +124,8 @@ export const revFormat: RevFormat = {
   y: (dateObj: Date, year: string) => {
     dateObj.setFullYear(2000 + parseFloat(year));
   },
+  ["-"]: doNothing,
+  ["/"]: doNothing,
 };
 
 export type TokenRegex = { [k in token]: string };
@@ -151,6 +155,8 @@ export const tokenRegex: TokenRegex = {
   u: "(.+)",
   w: "(\\d\\d|\\d)",
   y: "(\\d{2})",
+  ["-"]: "(-?)",
+  ["/"]: "(/?)",
 };
 
 export type Formats = Record<
@@ -164,7 +170,7 @@ export const formats: Formats = {
   // get the date in local
   z: (date: Date) => {
     let offset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-    return (new Date(date.getTime() - offset)).toISOString();    
+    return new Date(date.getTime() - offset).toISOString();
   },
 
   // weekday name, short, e.g. Thu
@@ -256,4 +262,7 @@ export const formats: Formats = {
 
   // last two digits of year e.g. 16 for 2016
   y: (date: Date) => String(date.getFullYear()).substring(2),
+
+  ["-"]: () => "-",
+  ["/"]: () => "/",
 };
