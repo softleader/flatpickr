@@ -2373,6 +2373,7 @@ function FlatpickrInstance(
     if ((date !== 0 && !date) || (date instanceof Array && date.length === 0))
       return self.clear(triggerChange);
 
+    date = self.config.beforeSetDate(date, format);
     setSelectedDate(date, format);
 
     self.showTimeInput = self.selectedDates.length > 0;

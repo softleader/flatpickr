@@ -242,6 +242,12 @@ Use it along with "enableTime" to create a time picker. */
 
   /* See https://chmln.github.io/flatpickr/examples/#flatpickr-external-elements */
   wrap: boolean;
+
+  /** Fully control input value before calling setDate function, e.g. masking input value */
+  beforeSetDate: (
+    date: DateOption | DateOption[],
+    format: string
+  ) => DateOption | DateOption[];
 }
 
 export type Options = Partial<BaseOptions>;
@@ -312,6 +318,7 @@ export interface ParsedOptions {
   time_24hr: boolean;
   weekNumbers: boolean;
   wrap: boolean;
+  beforeSetDate: BaseOptions["beforeSetDate"];
 }
 
 export const defaults: ParsedOptions = {
@@ -393,4 +400,5 @@ export const defaults: ParsedOptions = {
   time_24hr: false,
   weekNumbers: false,
   wrap: false,
+  beforeSetDate: date => date,
 };
