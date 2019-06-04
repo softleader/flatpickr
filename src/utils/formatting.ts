@@ -169,7 +169,7 @@ export const formats: Formats = {
 
   // get the date in local
   z: (date: Date) => {
-    let offset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    let offset = date.getTimezoneOffset() * 60000; //offset in milliseconds
     return new Date(date.getTime() - offset).toISOString();
   },
 
