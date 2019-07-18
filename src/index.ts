@@ -916,7 +916,11 @@ function FlatpickrInstance(
   }
 
   function buildMonthSwitch() {
-    if (self.config.showMonths > 1) return;
+    if (
+      self.config.showMonths > 1 ||
+      self.config.monthSelectorType !== "dropdown"
+    )
+      return;
 
     const shouldBuildMonth = function(month: number): boolean {
       if (
@@ -947,7 +951,11 @@ function FlatpickrInstance(
       );
 
       month.value = new Date(self.currentYear, i).getMonth().toString();
-      month.textContent = monthToStr(i, false, self.l10n);
+      month.textContent = monthToStr(
+        i,
+        self.config.shorthandCurrentMonth,
+        self.l10n
+      );
       month.tabIndex = -1;
 
       if (self.currentMonth === i) {
@@ -964,7 +972,10 @@ function FlatpickrInstance(
 
     let monthElement;
 
-    if (self.config.showMonths > 1) {
+    if (
+      self.config.showMonths > 1 ||
+      self.config.monthSelectorType === "static"
+    ) {
       monthElement = createElement<HTMLSpanElement>("span", "cur-month");
     } else {
       self.monthsDropdownContainer = createElement<HTMLSelectElement>(
@@ -1099,12 +1110,17 @@ function FlatpickrInstance(
     self.timeContainer.tabIndex = -1;
     const separator = createElement("span", "flatpickr-time-separator", ":");
 
-    const hourInput = createNumberInput("flatpickr-hour");
+    const hourInput = createNumberInput("flatpickr-hour", {
+      "aria-label": self.l10n.hourAriaLabel,
+    });
     self.hourElement = hourInput.getElementsByTagName(
       "input"
     )[0] as HTMLInputElement;
 
-    const minuteInput = createNumberInput("flatpickr-minute");
+    const minuteInput = createNumberInput("flatpickr-minute", {
+      "aria-label": self.l10n.minuteAriaLabel,
+    });
+
     self.minuteElement = minuteInput.getElementsByTagName(
       "input"
     )[0] as HTMLInputElement;
@@ -2377,7 +2393,8 @@ function FlatpickrInstance(
     setSelectedDate(date, format);
 
     self.showTimeInput = self.selectedDates.length > 0;
-    self.latestSelectedDateObj = self.selectedDates[self.selectedDates.length - 1];
+    self.latestSelectedDateObj =
+      self.selectedDates[self.selectedDates.length - 1];
 
     self.redraw();
     jumpToDate();
@@ -2645,7 +2662,10 @@ function FlatpickrInstance(
       const d = new Date(self.currentYear, self.currentMonth, 1);
       d.setMonth(self.currentMonth + i);
 
-      if (self.config.showMonths > 1) {
+      if (
+        self.config.showMonths > 1 ||
+        self.config.monthSelectorType === "static"
+      ) {
         self.monthElements[i].textContent =
           monthToStr(
             d.getMonth(),
@@ -2820,7 +2840,11 @@ function _flatpickr(
 }
 
 /* istanbul ignore next */
-if (typeof HTMLElement !== "undefined") {
+if (
+  typeof HTMLElement !== "undefined" &&
+  typeof HTMLCollection !== "undefined" &&
+  typeof NodeList !== "undefined"
+) {
   // browser env
   HTMLCollection.prototype.flatpickr = NodeList.prototype.flatpickr = function(
     config?: Options
@@ -2873,7 +2897,7 @@ flatpickr.formatDate = createDateFormatter({});
 flatpickr.compareDates = compareDates;
 
 /* istanbul ignore next */
-if (typeof jQuery !== "undefined") {
+if (typeof jQuery !== "undefined" && typeof jQuery.fn !== "undefined") {
   (jQuery.fn as any).flatpickr = function(config: Options) {
     return _flatpickr(this, config);
   };
