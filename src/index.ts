@@ -1605,7 +1605,7 @@ function FlatpickrInstance(
     const allowKeydown = self.isOpen && (!allowInput || !isInput);
     const allowInlineKeydown = self.config.inline && isInput && !allowInput;
 
-    if (e.keyCode === 13 && isInput) {
+    if ((e.keyCode === 13 || e.keyCode === 9) && isInput) {
       if (allowInput) {
         self.setDate(
           self._input.value,
